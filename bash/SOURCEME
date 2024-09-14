@@ -1,0 +1,6 @@
+#!/bin/bash
+
+CWD=$HOME/.dotfiles/bash
+
+source ${CWD}/prompt.sh
+source ${CWD}/aliases.sh

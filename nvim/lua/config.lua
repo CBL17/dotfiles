@@ -7,4 +7,4 @@ require('plugins/telescope')
 
 -- Set colorscheme
 vim.opt.termguicolors = true
-vim.cmd.colorscheme('tokyonight')
+vim.cmd([[colorscheme rose-pine-moon]])

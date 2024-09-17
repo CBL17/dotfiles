@@ -12,7 +12,7 @@ require('mason-lspconfig').setup{
         'clangd',
         'cmake',
         'lua_ls',
-        'jedi_language_server',
+        'pyright',
         'robotframework_ls',
         'zls',
     },

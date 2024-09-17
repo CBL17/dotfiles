@@ -18,7 +18,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  {'folke/tokyonight.nvim'},
+  { "rose-pine/neovim", name = "rose-pine" },
   {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
   {'williamboman/mason.nvim'},
   {'williamboman/mason-lspconfig.nvim'},

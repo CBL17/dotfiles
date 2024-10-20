@@ -1,17 +1,4 @@
-require('dapui').setup()
-
 local dap = require 'dap'
-local extension_path = vim.env.HOME .. "/.local/share/nvim/mason/packages/codelldb/extension/"
-local codelldb_path = extension_path .. "adapter/codelldb"
-
-dap.adapters.lldb = {
-  type = "server",
-  port = "${port}",
-  executable = {
-    command = codelldb_path,
-    args = { "--port", "${port}" },
-  },
-}
 
 dap.adapters.python = function(cb, config)
   if config.request == 'attach' then
@@ -38,21 +25,6 @@ dap.adapters.python = function(cb, config)
     })
   end
 end
-
-dap.configurations.cpp = {
-    {
-        name = "Launch file",
-        type = "lldb",
-        request = "launch",
-        program = function()
-          return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-        end,
-        cwd = "${workspaceFolder}",
-        preRunCommands = {
-            "breakpoint set --name main",
-        },
-    },
-}
 
 dap.configurations.python = {
     {

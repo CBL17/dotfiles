@@ -2,7 +2,7 @@ require('plugins/lazy')
 require('plugins/treesitter')
 require('plugins/lsp_signature')
 require('plugins/lsp')
-require('plugins/dap')
+require('plugins/dap/dap')
 require('plugins/cmp')
 require('plugins/telescope')
 

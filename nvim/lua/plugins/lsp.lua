@@ -8,12 +8,11 @@ end)
 require('mason').setup({})
 require('mason-lspconfig').setup{
     ensure_installed = {
-        'bashls',
         'clangd',
         'cmake',
         'lua_ls',
         'pyright',
-        'robotframework_ls',
+        'rust_analyzer',
         'zls',
     },
     handlers = {

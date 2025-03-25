@@ -10,18 +10,17 @@ mkdir -p ~/.local/share/man/man5/
 
 install_nvim() {
     # nvim binary install
-    wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz -q
-    wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz.sha256sum -q
+    wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz -q
+    wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz.sha256sum -q
 
-    sha256sum -c nvim-linux64.tar.gz.sha256sum --quiet
+    sha256sum -c nvim-linux-x86_64.tar.gz.sha256sum --quiet
+    rm nvim-linux-x86_64.tar.gz.sha256sum
 
-    rm nvim-linux64.tar.gz.sha256sum
+    tar -xf nvim-linux-x86_64.tar.gz -C .
+    rm -r nvim-linux-x86_64.tar.gz
 
-    tar -xf nvim-linux64.tar.gz nvim-linux64
-    rm -r nvim-linux64.tar.gz
-
-    mv ./nvim-linux64/ ~/.local/lib/nvim
-    ln -s ~/.local/lib/nvim/bin/nvim ~/.local/bin/nvim
+    mv ./nvim-linux-x86_64/ ~/.local/lib/nvim-linux-x86_64
+    ln -sf ~/.local/lib/nvim-linux-x86_64/bin/nvim ~/.local/bin/nvim
 
     # config install
     ln -s ./nvim ~/.config/nvim

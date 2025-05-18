@@ -22,9 +22,11 @@ dap.configurations.cpp = {
         end,
         rootPath = "${workspaceFolder}",
         cwd = "${workspaceFolder}",
-        preRunCommands = {
-            "breakpoint set --name main",
-        },
+        -- preRunCommands = {
+        --     "breakpoint set --name main",
+        -- },
+        stopOnEntry = true,
+        stopOnExit  = true,
     },
 }
 

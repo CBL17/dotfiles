@@ -3,21 +3,20 @@
 # Exits script on any failure
 set -e
 
-mkdir -p ~/.local/bin/
-mkdir -p ~/.local/lib/
-mkdir -p ~/.local/share/man/man1/
-mkdir -p ~/.local/share/man/man5/
+mkdir -p ~/.local/bin/ ~/.local/lib/ ~/.local/share/man/man1/ ~/.local/share/man/man5/
 
 install_nvim() {
-    # nvim binary install
-    wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz -q
-    wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz.sha256sum -q
+    local url_base="https://github.com/neovim/neovim/releases/download/stable"
+    local tar_name="nvim-linux-x86_64.tar.gz"
 
-    sha256sum -c nvim-linux-x86_64.tar.gz.sha256sum --quiet
-    rm nvim-linux-x86_64.tar.gz.sha256sum
+    wget "$url_base/$tar_name" -q
+    wget "$url_base/$tar_name.sha256sum" -q
 
-    tar -xf nvim-linux-x86_64.tar.gz -C .
-    rm -r nvim-linux-x86_64.tar.gz
+    sha256sum -c "$tar_name.sha256sum" --quiet
+    rm "$tar_name.sha256sum"
+
+    tar -xf "$tar_name" -C .
+    rm -r "$tar_name"
 
     mv ./nvim-linux-x86_64/ ~/.local/lib/nvim-linux-x86_64
     ln -sf ~/.local/lib/nvim-linux-x86_64/bin/nvim ~/.local/bin/nvim
@@ -27,10 +26,13 @@ install_nvim() {
 }
 
 install_exa() {
-    wget https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip -q
+    local url_base="https://github.com/ogham/exa/releases/download/v0.10.1"
+    local archive="exa-linux-x86_64-v0.10.1.zip"
 
-    unzip exa-linux-x86_64-v0.10.1.zip -d exa
-    rm -r exa-linux-x86_64-v0.10.1.zip
+    wget "$url_base/$archive" -q
+
+    unzip "$archive" -d exa
+    rm -r "$archive"
 
     mv ./exa/bin/exa ~/.local/bin
     mv ./exa/man/exa.1 ~/.local/share/man/man1

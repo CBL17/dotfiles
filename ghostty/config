@@ -1,0 +1,14 @@
+theme = Brogrammer
+command = tmux new-session -A -s main
+
+clipboard-read = allow
+clipboard-write = allow
+window-colorspace = srgb
+background-blur-radius = 20
+background-opacity = 0.95
+font-size = 16
+window-padding-x = 4
+window-padding-y = 4
+
+mouse-hide-while-typing = true
+mouse-scroll-multiplier = 2

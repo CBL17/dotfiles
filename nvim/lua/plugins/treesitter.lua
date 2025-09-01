@@ -1,5 +1,23 @@
+vim.pack.add({
+    "https://github.com/nvim-treesitter/nvim-treesitter"
+})
+
 require("nvim-treesitter.configs").setup({
-    ensure_installed = { "c", "asm", "bash", "cmake", "cpp", "gitcommit", "gitignore", "json", "nasm", "objdump", "python", "verilog", "zig"},
+    ensure_installed = {
+        "c",
+        "asm",
+        "bash",
+        "cmake",
+        "cpp",
+        "gitcommit",
+        "gitignore",
+        "json",
+        "nasm",
+        "objdump",
+        "python",
+        "verilog",
+        "zig",
+    },
     auto_install = true,
     sync_install = false,
     highlight = {

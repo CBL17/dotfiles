@@ -1,25 +1,29 @@
 #!/bin/bash
 
-mkdir -p ~/.local/bin/ ~/.local/lib/ ~/.local/share/man/man1/ ~/.local/share/man/man5/
+mkdir -p ${HOME}/.local/bin/ ${HOME}/.local/lib/ ${HOME}/.local/share/man/man1/ ${HOME}/.local/share/man/man5/
+
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 install_nvim() {
-    local url_base="https://github.com/neovim/neovim/releases/download/stable"
-    local tar_name="nvim-linux-x86_64.tar.gz"
+    local url_base="https://github.com/neovim/neovim/releases/download/v0.12.1"
+    local archive="nvim-linux-x86_64.tar.gz"
+    local checksum="e59a5eafcdf824e2bf6a738e75f8f62ba4ff1b7f1c7daaec2d134aa46737907c"
 
-    wget "$url_base/$tar_name" -q
-    wget "$url_base/$tar_name.sha256sum" -q
+    wget "$url_base/$archive" -q
 
-    sha256sum -c "$tar_name.sha256sum" --quiet
-    rm "$tar_name.sha256sum"
+    if ! echo "$checksum  $archive" | sha256sum --check --status; then
+        echo "Error: Checksum verification failed! The file may be corrupted or tampered with."
+        rm "$archive"
+        return 1
+    fi
 
-    tar -xf "$tar_name" -C .
-    rm -r "$tar_name"
+    tar -xf ${archive} -C ${HOME}/.local/lib
+    rm -r ${archive}
 
-    mv ./nvim-linux-x86_64/ ~/.local/lib/nvim-linux-x86_64
-    ln -sf ~/.local/lib/nvim-linux-x86_64/bin/nvim ~/.local/bin/nvim
+    ln -sf ${HOME}/.local/lib/nvim-linux-x86_64/bin/nvim ${HOME}/.local/bin/nvim
 
     # config install
-    ln -s ./nvim ~/.config/nvim
+    ln -s ${SCRIPT_DIR}/nvim ${HOME}/.config/nvim
 }
 
 install_eza() {
@@ -45,9 +49,8 @@ install_eza() {
 }
 
 install_bashrc() {
-    local script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-    local sourceme_path="${script_dir}"/bash/SOURCEME
-    echo -e "\nsource ${sourceme_path}" >> ~/.bashrc
+    local sourceme_path="${SCRIPT_DIR}"/bash/SOURCEME
+    echo -e "\nsource ${sourceme_path}" >> ${HOME}/.bashrc
 }
 
 # if no glibc > 2.29 or smth just install a new one and libm (most likely) to $LD_LIBRARY_PATH (add to bashrc

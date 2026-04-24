@@ -1,5 +1,7 @@
 -- UX
 vim.opt.scrolloff = 10
+vim.opt.ruler = true
+vim.opt.colorcolumn = "80"
 
 -- Indentation
 vim.opt.tabstop = 4

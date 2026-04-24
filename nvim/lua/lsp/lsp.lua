@@ -10,7 +10,6 @@ require("mason-lspconfig").setup({
     ensure_installed = {
         "clangd",
         "neocmake",
-        "ty",
         "rust_analyzer",
         "zls",
     },

@@ -44,5 +44,11 @@ install_eza() {
     echo "eza installed!"
 }
 
+install_bashrc() {
+    local script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+    local sourceme_path="${script_dir}"/bash/SOURCEME
+    echo -e "\nsource ${sourceme_path}" >> ~/.bashrc
+}
+
 # if no glibc > 2.29 or smth just install a new one and libm (most likely) to $LD_LIBRARY_PATH (add to bashrc
 # need options to install from source, also check versioning

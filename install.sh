@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Exits script on any failure
-set -e
-
 mkdir -p ~/.local/bin/ ~/.local/lib/ ~/.local/share/man/man1/ ~/.local/share/man/man5/
 
 install_nvim() {
@@ -25,20 +22,26 @@ install_nvim() {
     ln -s ./nvim ~/.config/nvim
 }
 
-install_exa() {
-    local url_base="https://github.com/ogham/exa/releases/download/v0.10.1"
-    local archive="exa-linux-x86_64-v0.10.1.zip"
+install_eza() {
+    local url_base="https://github.com/eza-community/eza/releases/download/v0.23.4"
+    local archive="eza_x86_64-unknown-linux-gnu.tar.gz"
+    local install_location="${HOME}/.local/bin"
+    local checksum="0c38665440226cd8bef5d1d4f3bc6ff77c927fb0d68b752739105db7ab5b358d"
 
-    wget "$url_base/$archive" -q
+    echo "Installing eza..."
+    wget "${url_base}/${archive}" -q
 
-    unzip "$archive" -d exa
-    rm -r "$archive"
+    if ! echo "$checksum  $archive" | sha256sum --check --status; then
+        echo "Error: Checksum verification failed! The file may be corrupted or tampered with."
+        rm "$archive"
+        return 1
+    fi
 
-    mv ./exa/bin/exa ~/.local/bin
-    mv ./exa/man/exa.1 ~/.local/share/man/man1
-    mv ./exa/man/exa_colors.5 ~/.local/share/man/man5
+    tar -xf "${archive}"
+    rm "${archive}"
 
-    rm -r exa
+    mv eza "${install_location}"
+    echo "eza installed!"
 }
 
 # if no glibc > 2.29 or smth just install a new one and libm (most likely) to $LD_LIBRARY_PATH (add to bashrc

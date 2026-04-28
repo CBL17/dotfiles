@@ -19,7 +19,7 @@ set_prompt() {
     
     local git_info=""
     if [ -n "$branch" ]; then
-        git_info="\[\e[90m\](\[\e[96;2m\]${branch}\[\e[0;90m\])"
+        git_info="\[\e[90m\] (\[\e[96;2m\]${branch}\[\e[0;90m\])"
     fi
 
     local arrow_color="\[\e[96;2m\]"

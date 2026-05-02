@@ -48,6 +48,28 @@ install_eza() {
     echo "eza installed!"
 }
 
+install_fzf() {
+    local url_base="https://github.com/junegunn/fzf/releases/download/v0.72.0"
+    local archive="fzf-0.72.0-linux_amd64.tar.gz"
+    local install_location="${HOME}/.local/bin"
+    local checksum="0e58e4bd0b3c5d68c56b54c460a6863d0de79633ed18d388575a960ab447b006"
+
+    echo "Installing fzf..."
+    wget "${url_base}/${archive}" -q
+
+    if ! echo "$checksum  $archive" | sha256sum --check --status; then
+        echo "Error: Checksum verification failed! The file may be corrupted or tampered with."
+        rm "$archive"
+        return 1
+    fi
+
+    tar -xf "${archive}"
+    rm "${archive}"
+
+    mv fzf "${install_location}"
+    echo "fzf installed!"
+}
+
 install_bashrc() {
     local sourceme_path="${SCRIPT_DIR}"/bash/SOURCEME
     echo -e "\nsource ${sourceme_path}" >> ${HOME}/.bashrc

@@ -1,20 +1,34 @@
 #!/bin/bash
 
+DRY_RUN=false
+for arg in "$@"; do
+    case "$arg" in
+        --dry-run) DRY_RUN=true ;;
+    esac
+done
+
 mkdir -p ${HOME}/.local/bin/ ${HOME}/.local/lib/ ${HOME}/.local/share/man/man1/ ${HOME}/.local/share/man/man5/
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 install_nvim() {
-    local url_base="https://github.com/neovim/neovim/releases/download/v0.12.1"
+    local url_base="https://github.com/neovim/neovim/releases/download/v0.12.5"
     local archive="nvim-linux-x86_64.tar.gz"
-    local checksum="e59a5eafcdf824e2bf6a738e75f8f62ba4ff1b7f1c7daaec2d134aa46737907c"
+    local checksum="bce0f56eda1f1b1db6eee8f4133d7a38813ea07933837dd1777411ca384c6875"
 
+    echo "Installing Neovim..."
     wget "$url_base/$archive" -q
 
     if ! echo "$checksum  $archive" | sha256sum --check --status; then
         echo "Error: Checksum verification failed! The file may be corrupted or tampered with."
         rm "$archive"
         return 1
+    fi
+
+    if $DRY_RUN; then
+        echo "Dry run: checksum verified, skipping Neovim install."
+        rm "$archive"
+        return 0
     fi
 
     tar -xf ${archive} -C ${HOME}/.local/lib
@@ -24,6 +38,7 @@ install_nvim() {
 
     # config install
     ln -s ${SCRIPT_DIR}/nvim ${HOME}/.config/nvim
+    echo "Neovim installed!"
 }
 
 install_eza() {
@@ -41,6 +56,12 @@ install_eza() {
         return 1
     fi
 
+    if $DRY_RUN; then
+        echo "Dry run: checksum verified, skipping eza install."
+        rm "$archive"
+        return 0
+    fi
+
     tar -xf "${archive}"
     rm "${archive}"
 
@@ -49,10 +70,10 @@ install_eza() {
 }
 
 install_fzf() {
-    local url_base="https://github.com/junegunn/fzf/releases/download/v0.72.0"
-    local archive="fzf-0.72.0-linux_amd64.tar.gz"
+    local url_base="https://github.com/junegunn/fzf/releases/download/v0.74.3"
+    local archive="fzf-0.74.3-linux_amd64.tar.gz"
     local install_location="${HOME}/.local/bin"
-    local checksum="0e58e4bd0b3c5d68c56b54c460a6863d0de79633ed18d388575a960ab447b006"
+    local checksum="3501a595e4b5c40a6b047340a0e8f805c46fd4e61ef95ef8a136ba8c61cf6f22"
 
     echo "Installing fzf..."
     wget "${url_base}/${archive}" -q
@@ -61,6 +82,12 @@ install_fzf() {
         echo "Error: Checksum verification failed! The file may be corrupted or tampered with."
         rm "$archive"
         return 1
+    fi
+
+    if $DRY_RUN; then
+        echo "Dry run: checksum verified, skipping fzf install."
+        rm "$archive"
+        return 0
     fi
 
     tar -xf "${archive}"
@@ -74,6 +101,12 @@ install_bashrc() {
     local sourceme_path="${SCRIPT_DIR}"/bash/SOURCEME
     echo -e "\nsource ${sourceme_path}" >> ${HOME}/.bashrc
 }
+
+if $DRY_RUN; then
+    install_fzf
+    install_nvim
+    install_eza
+fi
 
 # if no glibc > 2.29 or smth just install a new one and libm (most likely) to $LD_LIBRARY_PATH (add to bashrc
 # need options to install from source, also check versioning
